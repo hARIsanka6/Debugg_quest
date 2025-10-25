@@ -1,0 +1,168 @@
+@import url('https://fonts.googleapis.com/css2?family=Orbitron:wght@400;500;600;700;800;900&family=Space+Mono:wght@400;700&display=swap');
+
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+/* Definition of the design system. All colors, gradients, fonts, etc should be defined here. 
+All colors MUST be HSL.
+*/
+
+@layer base {
+  :root {
+    /* Cyberpunk/Gaming inspired colors */
+    --background: 222 47% 5%;
+    --foreground: 210 40% 98%;
+
+    --card: 222 47% 8%;
+    --card-foreground: 210 40% 98%;
+
+    --popover: 222 47% 8%;
+    --popover-foreground: 210 40% 98%;
+
+    /* Electric purple primary */
+    --primary: 270 91% 65%;
+    --primary-foreground: 0 0% 100%;
+    --primary-glow: 270 91% 75%;
+
+    /* Neon cyan secondary */
+    --secondary: 180 100% 50%;
+    --secondary-foreground: 222 47% 5%;
+
+    --muted: 222 30% 15%;
+    --muted-foreground: 215 20% 65%;
+
+    /* Gold accent for XP/achievements */
+    --accent: 45 93% 58%;
+    --accent-foreground: 222 47% 5%;
+
+    /* Terminal green */
+    --terminal: 142 76% 56%;
+    --terminal-foreground: 222 47% 5%;
+
+    --destructive: 0 84% 60%;
+    --destructive-foreground: 210 40% 98%;
+
+    --border: 222 30% 18%;
+    --input: 222 30% 18%;
+    --ring: 270 91% 65%;
+
+    --radius: 0.75rem;
+
+    /* Custom gradients */
+    --gradient-primary: linear-gradient(135deg, hsl(270 91% 65%), hsl(240 91% 65%));
+    --gradient-cyber: linear-gradient(135deg, hsl(180 100% 50%), hsl(270 91% 65%));
+    --gradient-gold: linear-gradient(135deg, hsl(45 93% 58%), hsl(30 93% 58%));
+    
+    /* Glows */
+    --glow-primary: 0 0 20px hsl(270 91% 65% / 0.5);
+    --glow-cyan: 0 0 20px hsl(180 100% 50% / 0.5);
+    --glow-gold: 0 0 20px hsl(45 93% 58% / 0.5);
+
+    --sidebar-background: 222 47% 6%;
+    --sidebar-foreground: 215 20% 65%;
+    --sidebar-primary: 270 91% 65%;
+    --sidebar-primary-foreground: 0 0% 100%;
+    --sidebar-accent: 222 30% 12%;
+    --sidebar-accent-foreground: 210 40% 98%;
+    --sidebar-border: 222 30% 18%;
+    --sidebar-ring: 270 91% 65%;
+  }
+}
+
+@layer base {
+  * {
+    @apply border-border;
+  }
+
+  body {
+    @apply bg-background text-foreground font-sans antialiased;
+    cursor: url('data:image/svg+xml;utf8,<svg xmlns="http://www.w3.org/2000/svg" width="32" height="32" viewBox="0 0 32 32"><circle cx="16" cy="16" r="2" fill="%2306b6d4" opacity="0.8"/><circle cx="16" cy="16" r="8" fill="none" stroke="%2306b6d4" stroke-width="2" opacity="0.6"/><line x1="16" y1="0" x2="16" y2="8" stroke="%2306b6d4" stroke-width="2" opacity="0.8"/><line x1="16" y1="24" x2="16" y2="32" stroke="%2306b6d4" stroke-width="2" opacity="0.8"/><line x1="0" y1="16" x2="8" y2="16" stroke="%2306b6d4" stroke-width="2" opacity="0.8"/><line x1="24" y1="16" x2="32" y2="16" stroke="%2306b6d4" stroke-width="2" opacity="0.8"/></svg>') 16 16, crosshair;
+  }
+
+  * {
+    cursor: url('data:image/svg+xml;utf8,<svg xmlns="http://www.w3.org/2000/svg" width="32" height="32" viewBox="0 0 32 32"><circle cx="16" cy="16" r="2" fill="%2306b6d4" opacity="0.8"/><circle cx="16" cy="16" r="8" fill="none" stroke="%2306b6d4" stroke-width="2" opacity="0.6"/><line x1="16" y1="0" x2="16" y2="8" stroke="%2306b6d4" stroke-width="2" opacity="0.8"/><line x1="16" y1="24" x2="16" y2="32" stroke="%2306b6d4" stroke-width="2" opacity="0.8"/><line x1="0" y1="16" x2="8" y2="16" stroke="%2306b6d4" stroke-width="2" opacity="0.8"/><line x1="24" y1="16" x2="32" y2="16" stroke="%2306b6d4" stroke-width="2" opacity="0.8"/></svg>') 16 16, crosshair;
+  }
+
+  button, a, input, textarea, select {
+    cursor: url('data:image/svg+xml;utf8,<svg xmlns="http://www.w3.org/2000/svg" width="32" height="32" viewBox="0 0 32 32"><circle cx="16" cy="16" r="2" fill="%23a855f7" opacity="0.8"/><circle cx="16" cy="16" r="8" fill="none" stroke="%23a855f7" stroke-width="2" opacity="0.6"/><line x1="16" y1="0" x2="16" y2="8" stroke="%23a855f7" stroke-width="2" opacity="0.8"/><line x1="16" y1="24" x2="16" y2="32" stroke="%23a855f7" stroke-width="2" opacity="0.8"/><line x1="0" y1="16" x2="8" y2="16" stroke="%23a855f7" stroke-width="2" opacity="0.8"/><line x1="24" y1="16" x2="32" y2="16" stroke="%23a855f7" stroke-width="2" opacity="0.8"/></svg>') 16 16, pointer;
+  }
+
+  @keyframes bounce-slow {
+    0%, 100% {
+      transform: translateY(0);
+    }
+    50% {
+      transform: translateY(-10px);
+    }
+  }
+
+  @keyframes fade-in {
+    from {
+      opacity: 0;
+    }
+    to {
+      opacity: 1;
+    }
+  }
+
+  .animate-bounce-slow {
+    animation: bounce-slow 3s ease-in-out infinite;
+  }
+
+  .animate-fade-in {
+    animation: fade-in 0.3s ease-out;
+  }
+}
+
+@layer components {
+  .cyber-card {
+    @apply relative overflow-hidden rounded-xl border border-border/50 bg-card/50 backdrop-blur-sm;
+    box-shadow: 0 0 30px hsl(var(--primary) / 0.1);
+  }
+
+  .cyber-card::before {
+    content: '';
+    @apply absolute inset-0 opacity-0 transition-opacity duration-300;
+    background: linear-gradient(135deg, hsl(var(--primary) / 0.1), transparent);
+    pointer-events: none;
+  }
+
+  .cyber-card:hover::before {
+    @apply opacity-100;
+  }
+
+  .glow-text {
+    text-shadow: var(--glow-primary);
+  }
+
+  .glow-border {
+    box-shadow: 0 0 20px hsl(var(--primary) / 0.3);
+  }
+
+  .terminal-text {
+    font-family: 'Space Mono', monospace;
+  }
+
+  .game-title {
+    font-family: 'Orbitron', sans-serif;
+  }
+
+  /* Custom space gun cursor */
+  .space-gun-cursor {
+    cursor: crosshair;
+  }
+
+  .space-gun-cursor * {
+    cursor: crosshair;
+  }
+
+  /* Custom crosshair cursor with SVG */
+  .space-crosshair {
+    cursor: url('data:image/svg+xml;utf8,<svg xmlns="http://www.w3.org/2000/svg" width="32" height="32" viewBox="0 0 32 32"><circle cx="16" cy="16" r="2" fill="%2306b6d4" opacity="0.8"/><circle cx="16" cy="16" r="8" fill="none" stroke="%2306b6d4" stroke-width="2" opacity="0.6"/><line x1="16" y1="0" x2="16" y2="8" stroke="%2306b6d4" stroke-width="2" opacity="0.8"/><line x1="16" y1="24" x2="16" y2="32" stroke="%2306b6d4" stroke-width="2" opacity="0.8"/><line x1="0" y1="16" x2="8" y2="16" stroke="%2306b6d4" stroke-width="2" opacity="0.8"/><line x1="24" y1="16" x2="32" y2="16" stroke="%2306b6d4" stroke-width="2" opacity="0.8"/></svg>') 16 16, crosshair;
+  }
+
+  .space-crosshair * {
+    cursor: url('data:image/svg+xml;utf8,<svg xmlns="http://www.w3.org/2000/svg" width="32" height="32" viewBox="0 0 32 32"><circle cx="16" cy="16" r="2" fill="%2306b6d4" opacity="0.8"/><circle cx="16" cy="16" r="8" fill="none" stroke="%2306b6d4" stroke-width="2" opacity="0.6"/><line x1="16" y1="0" x2="16" y2="8" stroke="%2306b6d4" stroke-width="2" opacity="0.8"/><line x1="16" y1="24" x2="16" y2="32" stroke="%2306b6d4" stroke-width="2" opacity="0.8"/><line x1="0" y1="16" x2="8" y2="16" stroke="%2306b6d4" stroke-width="2" opacity="0.8"/><line x1="24" y1="16" x2="32" y2="16" stroke="%2306b6d4" stroke-width="2" opacity="0.8"/></svg>') 16 16, crosshair;
+  }
+}
