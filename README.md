@@ -1,84 +1,231 @@
-# Debugg Quest Adventure
+# 🐛 Debugg Quest Adventure - Setup Guide
 
-A gamified debugging learning platform where users can master debugging skills through an epic coding adventure across multiple programming languages.
+Welcome to Debugg Quest Adventure! This guide will help you clone and run this epic space-themed debugging game.
 
-## Features
+## 📋 Prerequisites
 
-- 🐛 Interactive debugging challenges
-- 🎮 Gamified learning experience with XP and levels
-- 🏆 Achievement system with badges
-- 💻 Support for Python, JavaScript, C++, and Java
-- 🔐 User authentication with Supabase
-- 🎨 Cyberpunk-themed UI with smooth animations
+Before you begin, ensure you have the following installed:
 
-## Project info
+- **Node.js** (v18 or higher) - [Download here](https://nodejs.org/)
+- **npm** or **yarn** package manager
+- **Git** - [Download here](https://git-scm.com/)
+- A **Supabase account** (free tier works!) - [Sign up here](https://supabase.com/)
 
-**URL**: https://lovable.dev/projects/4255044a-1c90-49ad-90f6-ab7c0885f259
+## 🚀 Quick Start
 
-## How can I edit this code?
+### 1. Clone the Repository
 
-There are several ways of editing your application.
-
-**Use Lovable**
-
-Simply visit the [Lovable Project](https://lovable.dev/projects/4255044a-1c90-49ad-90f6-ab7c0885f259) and start prompting.
-
-Changes made via Lovable will be committed automatically to this repo.
-
-**Use your preferred IDE**
-
-If you want to work locally using your own IDE, you can clone this repo and push changes. Pushed changes will also be reflected in Lovable.
-
-The only requirement is having Node.js & npm installed - [install with nvm](https://github.com/nvm-sh/nvm#installing-and-updating)
-
-Follow these steps:
-
-```sh
-# Step 1: Clone the repository using the project's Git URL.
-git clone <YOUR_GIT_URL>
-
-# Step 2: Navigate to the project directory.
-cd <YOUR_PROJECT_NAME>
-
-# Step 3: Install the necessary dependencies.
-npm i
-
-# Step 4: Start the development server with auto-reloading and an instant preview.
-npm run dev
+```bash
+git clone <your-repo-url>
+cd debugg-quest-adventure
 ```
 
-**Edit a file directly in GitHub**
+### 2. Install Dependencies
 
-- Navigate to the desired file(s).
-- Click the "Edit" button (pencil icon) at the top right of the file view.
-- Make your changes and commit the changes.
+```bash
+npm install
+# or
+yarn install
+```
 
-**Use GitHub Codespaces**
+### 3. Set Up Supabase
 
-- Navigate to the main page of your repository.
-- Click on the "Code" button (green button) near the top right.
-- Select the "Codespaces" tab.
-- Click on "New codespace" to launch a new Codespace environment.
-- Edit files directly within the Codespace and commit and push your changes once you're done.
+#### Create a Supabase Project
 
-## What technologies are used for this project?
+1. Go to [Supabase Dashboard](https://app.supabase.com/)
+2. Click "New Project"
+3. Fill in your project details
+4. Wait for the project to be created
 
-This project is built with:
+#### Get Your Credentials
 
-- Vite
-- TypeScript
-- React
-- shadcn-ui
-- Tailwind CSS
+1. Go to Project Settings → API
+2. Copy your:
+   - Project URL
+   - `anon` public key
 
-## How can I deploy this project?
+#### Run Database Migrations
 
-Simply open [Lovable](https://lovable.dev/projects/4255044a-1c90-49ad-90f6-ab7c0885f259) and click on Share -> Publish.
+1. In your Supabase project, go to the SQL Editor
+2. Run the following migration files in order:
+   - `supabase_migration_challenges.sql` (creates challenges table)
+   - `supabase_migration_more_badges.sql` (creates badges system)
 
-## Can I connect a custom domain to my Lovable project?
+### 4. Configure Environment Variables
 
-Yes, you can!
+Create a `.env` file in the root directory:
 
-To connect a domain, navigate to Project > Settings > Domains and click Connect Domain.
+```env
+VITE_SUPABASE_URL=your_supabase_project_url
+VITE_SUPABASE_ANON_KEY=your_supabase_anon_key
+```
 
-Read more here: [Setting up a custom domain](https://docs.lovable.dev/features/custom-domain#custom-domain)
+Replace the values with your actual Supabase credentials.
+
+### 5. Start the Development Server
+
+```bash
+npm run dev
+# or
+yarn dev
+```
+
+The app will be available at `http://localhost:5173`
+
+## 🎮 First Time Setup
+
+### Create Your Account
+
+1. Navigate to the Auth page
+2. Click "Sign Up"
+3. Enter your email, password, and username
+4. Check your email for confirmation
+5. Once confirmed, sign in!
+
+### Explore the Features
+
+- **Language Selection**: Choose from Python, JavaScript, C++, or Java
+- **Level Map**: Navigate through debugging challenges
+- **Code Editor**: Fix bugs with syntax highlighting
+- **Teacher Avatar**: Learn concepts through animated stories
+- **Profile**: Track your progress and badges
+- **Leaderboard**: Compete with other debuggers
+
+## 🛠️ Development
+
+### Available Scripts
+
+```bash
+# Start development server
+npm run dev
+
+# Build for production
+npm run build
+
+# Preview production build
+npm run preview
+
+# Run linter
+npm run lint
+```
+
+### Project Structure
+
+```
+debugg-quest-adventure/
+├── src/
+│   ├── components/          # React components
+│   │   ├── ui/             # shadcn/ui components
+│   │   ├── AvatarMascot.tsx
+│   │   ├── TeacherAvatar.tsx
+│   │   ├── SpaceBackground.tsx
+│   │   └── ...
+│   ├── pages/              # Page components
+│   │   ├── Auth.tsx
+│   │   ├── LanguageSelect.tsx
+│   │   ├── LevelMap.tsx
+│   │   ├── LevelPlay.tsx
+│   │   └── ...
+│   ├── lib/                # Utility functions
+│   ├── integrations/       # Supabase integration
+│   ├── data/              # Static data
+│   └── main.tsx           # Entry point
+├── public/                # Static assets
+├── supabase_migration_*.sql  # Database migrations
+└── ...
+```
+
+## 🎨 Key Features
+
+### 🌌 Immersive Space Theme
+- Animated wormhole background on Auth page
+- Space battle backgrounds
+- Floating planets with orbiting text
+- Retro space invaders mini-game
+
+### 🎵 Epic Audio
+- Star Wars-inspired background music
+- Sound effects for interactions
+- Voice synthesis for feedback
+- Ambient music toggle
+
+### 🎓 Interactive Learning
+- Animated story-based concept teaching
+- Character-driven narratives
+- Visual code examples
+- Progressive difficulty
+
+### 🏆 Gamification
+- XP and leveling system
+- 60+ unique badges
+- Streak tracking
+- Global leaderboard
+- Performance analytics
+
+### 💻 Advanced Code Editor
+- Syntax highlighting
+- Real-time validation
+- Hint system
+- Multiple language support
+
+## 🐛 Troubleshooting
+
+### Port Already in Use
+
+If port 5173 is already in use:
+
+```bash
+npm run dev -- --port 3000
+```
+
+### Supabase Connection Issues
+
+1. Verify your `.env` file has correct credentials
+2. Check if your Supabase project is active
+3. Ensure you've run all database migrations
+4. Check browser console for specific errors
+
+### Build Errors
+
+```bash
+# Clear cache and reinstall
+rm -rf node_modules
+rm package-lock.json
+npm install
+```
+
+### Audio Not Playing
+
+1. Click the ambient music toggle button
+2. Check browser console for audio context errors
+3. Some browsers require user interaction before playing audio
+4. Ensure your browser supports Web Audio API
+
+## 📚 Additional Resources
+
+- [Supabase Documentation](https://supabase.com/docs)
+- [React Documentation](https://react.dev/)
+- [Vite Documentation](https://vitejs.dev/)
+- [Tailwind CSS](https://tailwindcss.com/)
+- [shadcn/ui](https://ui.shadcn.com/)
+
+## 🤝 Contributing
+
+Contributions are welcome! Please feel free to submit a Pull Request.
+
+## 📝 License
+
+This project is open source and available under the MIT License.
+
+## 🎉 Have Fun!
+
+Embark on your debugging adventure through space! Fix bugs, earn badges, and become a master debugger!
+
+---
+
+**Need help?** Check the other documentation files:
+- `SUPABASE_SETUP.md` - Detailed Supabase configuration
+- `FEATURES.md` - Complete feature list
+- `QUICKSTART.md` - Quick reference guide
+
+Happy Debugging! 🚀🐛
