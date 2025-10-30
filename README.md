@@ -1,17 +1,19 @@
-# 🐛 Debugg Quest Adventure - Setup Guide
+# 🐛 Debugg Quest Adventure
 
-Welcome to Debugg Quest Adventure! This guide will help you clone and run this epic space-themed debugging game.
+<div me to Debugg Quest Adventure! This guide will help you clone and run this epic space-themed debugging game.
 </br>
 ### Language Selection
 <img width="700" height="600" alt="Language Selection" src="https://github.com/user-attachments/assets/2b50cbad-6901-46ed-b151-f492ff23a24f" />
 </br>
 
 ### Level Selection
+
 <img width="700" height="600" alt="Screenshot 2025-10-25 164052" src="https://github.com/user-attachments/assets/2f0cccab-b67f-44a7-80da-6bd18c3dc037" />
 
 </br>
 
 ### Debugg
+
 <img width="700" height="600" alt="Screenshot 2025-10-25 164113" src="https://github.com/user-attachments/assets/fe39a00f-5a72-4529-a2ac-5336be9ab537" />
 
 ## 📋 Prerequisites
@@ -150,24 +152,28 @@ debugg-quest-adventure/
 ## 🎨 Key Features
 
 ### 🌌 Immersive Space Theme
+
 - Animated wormhole background on Auth page
 - Space battle backgrounds
 - Floating planets with orbiting text
 - Retro space invaders mini-game
 
 ### 🎵 Epic Audio
+
 - Star Wars-inspired background music
 - Sound effects for interactions
 - Voice synthesis for feedback
 - Ambient music toggle
 
 ### 🎓 Interactive Learning
+
 - Animated story-based concept teaching
 - Character-driven narratives
 - Visual code examples
 - Progressive difficulty
 
 ### 🏆 Gamification
+
 - XP and leveling system
 - 60+ unique badges
 - Streak tracking
@@ -175,6 +181,7 @@ debugg-quest-adventure/
 - Performance analytics
 
 ### 💻 Advanced Code Editor
+
 - Syntax highlighting
 - Real-time validation
 - Hint system
@@ -236,6 +243,7 @@ Embark on your debugging adventure through space! Fix bugs, earn badges, and bec
 ---
 
 **Need help?** Check the other documentation files:
+
 - `SUPABASE_SETUP.md` - Detailed Supabase configuration
 - `FEATURES.md` - Complete feature list
 - `QUICKSTART.md` - Quick reference guide

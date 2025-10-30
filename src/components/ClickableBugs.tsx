@@ -1,4 +1,5 @@
 import { useEffect, useRef, useState, useCallback } from "react";
+import { soundEffects } from "@/lib/soundEffects";
 
 interface Bug {
   id: number;
@@ -29,10 +30,14 @@ export const ClickableBugs = () => {
   const [lasers, setLasers] = useState<Laser[]>([]);
   const [particles, setParticles] = useState<Particle[]>([]);
   const [shipX, setShipX] = useState(0);
+  const [score, setScore] = useState(0);
+  const [combo, setCombo] = useState(0);
+  const [showCombo, setShowCombo] = useState(false);
   const nextBugIdRef = useRef(0);
   const nextLaserIdRef = useRef(0);
   const containerRef = useRef<HTMLDivElement>(null);
   const keysPressed = useRef<Set<string>>(new Set());
+  const comboTimerRef = useRef<NodeJS.Timeout | null>(null);
 
   const getBugColor = (type: number): string => {
     const colors = [
@@ -94,6 +99,34 @@ export const ClickableBugs = () => {
     
     setParticles(prev => [...prev, ...newParticles]);
   };
+
+  const addScore = useCallback((points: number) => {
+    setCombo(prev => {
+      const newCombo = prev + 1;
+      const multiplier = Math.min(Math.floor(newCombo / 3) + 1, 5);
+      setScore(s => s + points * multiplier);
+      
+      // Play hit sound
+      soundEffects.playBugHit();
+      
+      // Play combo sound for combos
+      if (newCombo > 1) {
+        setShowCombo(true);
+        setTimeout(() => setShowCombo(false), 1000);
+        soundEffects.playCombo(newCombo);
+      }
+      
+      // Reset combo timer
+      if (comboTimerRef.current) {
+        clearTimeout(comboTimerRef.current);
+      }
+      comboTimerRef.current = setTimeout(() => {
+        setCombo(0);
+      }, 2000);
+      
+      return newCombo;
+    });
+  }, []);
 
   // Initialize ship position
   useEffect(() => {
@@ -183,6 +216,7 @@ export const ClickableBugs = () => {
                 bugsToRemove.add(bug.id);
                 lasersToRemove.add(laser.id);
                 createExplosion(bug.x, bug.y, bug.type);
+                addScore(10);
               }
             });
           });
@@ -319,6 +353,30 @@ export const ClickableBugs = () => {
           <path d="M 35 30 L 40 35 L 37 38 L 30 35 Z" fill="rgba(168, 85, 247, 0.7)" />
         </svg>
       </div>
+
+      {/* Score Display */}
+      <div className="absolute top-4 left-4 pointer-events-none">
+        <div className="bg-black/70 backdrop-blur-sm px-6 py-3 rounded-lg border-2 border-cyan-400/50 shadow-[0_0_20px_rgba(6,182,212,0.3)]">
+          <div className="text-xs text-cyan-400 font-mono mb-1">SCORE</div>
+          <div className="text-3xl font-bold text-cyan-400 font-mono tracking-wider">
+            {score.toString().padStart(6, '0')}
+          </div>
+          {combo > 1 && (
+            <div className={`text-sm font-bold mt-1 transition-all duration-300 ${showCombo ? 'scale-125 text-yellow-400' : 'text-purple-400'}`}>
+              {combo}x COMBO! 🔥
+            </div>
+          )}
+        </div>
+      </div>
+
+      {/* High Score Indicator */}
+      {score > 0 && score % 100 === 0 && (
+        <div className="absolute top-1/3 left-1/2 transform -translate-x-1/2 pointer-events-none animate-bounce">
+          <div className="text-4xl font-bold text-yellow-400 font-game drop-shadow-[0_0_20px_rgba(251,191,36,0.8)]">
+            +100! 🌟
+          </div>
+        </div>
+      )}
 
       {/* Controls hint */}
       <div className="absolute bottom-4 left-1/2 transform -translate-x-1/2 pointer-events-none">

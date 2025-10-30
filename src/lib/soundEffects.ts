@@ -10,16 +10,17 @@ class SoundEffectsManager {
 
   constructor() {
     // Initialize Audio Context on user interaction
-    if (typeof window !== 'undefined') {
+    if (typeof window !== "undefined") {
       this.initAudioContext();
     }
   }
 
   private initAudioContext() {
     try {
-      this.audioContext = new (window.AudioContext || (window as any).webkitAudioContext)();
+      this.audioContext = new (window.AudioContext ||
+        (window as any).webkitAudioContext)();
     } catch (e) {
-      console.warn('Web Audio API not supported');
+      console.warn("Web Audio API not supported");
     }
   }
 
@@ -36,10 +37,13 @@ class SoundEffectsManager {
     gainNode.connect(this.audioContext.destination);
 
     oscillator.frequency.value = frequency;
-    oscillator.type = 'sine';
+    oscillator.type = "sine";
 
     gainNode.gain.setValueAtTime(volume, this.audioContext.currentTime);
-    gainNode.gain.exponentialRampToValueAtTime(0.01, this.audioContext.currentTime + duration);
+    gainNode.gain.exponentialRampToValueAtTime(
+      0.01,
+      this.audioContext.currentTime + duration
+    );
 
     oscillator.start(this.audioContext.currentTime);
     oscillator.stop(this.audioContext.currentTime + duration);
@@ -50,7 +54,7 @@ class SoundEffectsManager {
    */
   playSuccess() {
     if (this.isMuted) return;
-    
+
     const notes = [523.25, 659.25, 783.99]; // C5, E5, G5
     notes.forEach((freq, index) => {
       setTimeout(() => this.playBeep(freq, 0.15, 0.2), index * 100);
@@ -62,7 +66,7 @@ class SoundEffectsManager {
    */
   playError() {
     if (this.isMuted) return;
-    
+
     const notes = [392, 349.23]; // G4, F4
     notes.forEach((freq, index) => {
       setTimeout(() => this.playBeep(freq, 0.2, 0.15), index * 150);
@@ -74,16 +78,16 @@ class SoundEffectsManager {
    */
   playLevelComplete() {
     if (this.isMuted) return;
-    
+
     const melody = [
       { freq: 523.25, duration: 0.15 }, // C5
       { freq: 659.25, duration: 0.15 }, // E5
       { freq: 783.99, duration: 0.15 }, // G5
-      { freq: 1046.50, duration: 0.4 }  // C6
+      { freq: 1046.5, duration: 0.4 }, // C6
     ];
 
     let delay = 0;
-    melody.forEach(note => {
+    melody.forEach((note) => {
       setTimeout(() => this.playBeep(note.freq, note.duration, 0.25), delay);
       delay += note.duration * 1000;
     });
@@ -94,16 +98,16 @@ class SoundEffectsManager {
    */
   playBadgeUnlock() {
     if (this.isMuted) return;
-    
+
     const sparkle = [
-      { freq: 1046.50, duration: 0.1 },
+      { freq: 1046.5, duration: 0.1 },
       { freq: 1318.51, duration: 0.1 },
       { freq: 1567.98, duration: 0.1 },
-      { freq: 2093.00, duration: 0.3 }
+      { freq: 2093.0, duration: 0.3 },
     ];
 
     let delay = 0;
-    sparkle.forEach(note => {
+    sparkle.forEach((note) => {
       setTimeout(() => this.playBeep(note.freq, note.duration, 0.2), delay);
       delay += note.duration * 800;
     });
@@ -126,19 +130,71 @@ class SoundEffectsManager {
   }
 
   /**
+   * Play bug hit sound (explosion/zap)
+   */
+  playBugHit() {
+    if (this.isMuted || !this.audioContext) return;
+
+    // Create a short explosion/zap sound
+    const oscillator = this.audioContext.createOscillator();
+    const gainNode = this.audioContext.createGain();
+    const filter = this.audioContext.createBiquadFilter();
+
+    oscillator.connect(filter);
+    filter.connect(gainNode);
+    gainNode.connect(this.audioContext.destination);
+
+    // Start with high frequency and sweep down (explosion effect)
+    oscillator.frequency.setValueAtTime(800, this.audioContext.currentTime);
+    oscillator.frequency.exponentialRampToValueAtTime(
+      50,
+      this.audioContext.currentTime + 0.1
+    );
+    oscillator.type = "sawtooth";
+
+    // Filter for more interesting sound
+    filter.type = "lowpass";
+    filter.frequency.setValueAtTime(2000, this.audioContext.currentTime);
+    filter.frequency.exponentialRampToValueAtTime(
+      100,
+      this.audioContext.currentTime + 0.1
+    );
+
+    // Quick fade out
+    gainNode.gain.setValueAtTime(0.3, this.audioContext.currentTime);
+    gainNode.gain.exponentialRampToValueAtTime(
+      0.01,
+      this.audioContext.currentTime + 0.1
+    );
+
+    oscillator.start(this.audioContext.currentTime);
+    oscillator.stop(this.audioContext.currentTime + 0.1);
+  }
+
+  /**
+   * Play combo sound (higher pitch for combos)
+   */
+  playCombo(comboLevel: number) {
+    if (this.isMuted) return;
+    const baseFreq = 600;
+    const freq = baseFreq + comboLevel * 100;
+    this.playBeep(freq, 0.08, 0.2);
+  }
+
+  /**
    * Play level unlock sound
    */
   playLevelUnlock() {
     if (this.isMuted) return;
-    
+
     const unlock = [
       { freq: 659.25, duration: 0.1 },
       { freq: 783.99, duration: 0.1 },
-      { freq: 1046.50, duration: 0.2 }
+      { freq: 1046.5, duration: 0.2 },
     ];
 
     let delay = 0;
-    unlock.forEach(note => {
+    unlock.forEach((note) => {
       setTimeout(() => this.playBeep(note.freq, note.duration, 0.2), delay);
       delay += note.duration * 900;
     });
@@ -148,7 +204,7 @@ class SoundEffectsManager {
    * Speak text using Speech Synthesis API
    */
   speak(text: string, rate: number = 1.0, pitch: number = 1.0) {
-    if (this.isMuted || !('speechSynthesis' in window)) return;
+    if (this.isMuted || !("speechSynthesis" in window)) return;
 
     // Cancel any ongoing speech
     window.speechSynthesis.cancel();
@@ -160,11 +216,12 @@ class SoundEffectsManager {
 
     // Try to use a more natural voice
     const voices = window.speechSynthesis.getVoices();
-    const preferredVoice = voices.find(voice => 
-      voice.lang.startsWith('en') && 
-      (voice.name.includes('Google') || voice.name.includes('Natural'))
+    const preferredVoice = voices.find(
+      (voice) =>
+        voice.lang.startsWith("en") &&
+        (voice.name.includes("Google") || voice.name.includes("Natural"))
     );
-    
+
     if (preferredVoice) {
       utterance.voice = preferredVoice;
     }
@@ -181,7 +238,7 @@ class SoundEffectsManager {
       "Excellent work!",
       "Perfect!",
       "Great job!",
-      "Outstanding!"
+      "Outstanding!",
     ];
     const message = messages[Math.floor(Math.random() * messages.length)];
     this.speak(message, 1.1, 1.2);
@@ -196,7 +253,7 @@ class SoundEffectsManager {
       "Not quite right!",
       "Keep trying!",
       "Almost there!",
-      "Give it another shot!"
+      "Give it another shot!",
     ];
     const message = messages[Math.floor(Math.random() * messages.length)];
     this.speak(message, 1.0, 0.9);
@@ -290,7 +347,7 @@ class SoundEffectsManager {
 export const soundEffects = new SoundEffectsManager();
 
 // Load voices when available
-if (typeof window !== 'undefined' && 'speechSynthesis' in window) {
+if (typeof window !== "undefined" && "speechSynthesis" in window) {
   window.speechSynthesis.onvoiceschanged = () => {
     window.speechSynthesis.getVoices();
   };

@@ -19,11 +19,25 @@ const LevelMap = () => {
   const [progress, setProgress] = useState<any>(null);
   const [profile, setProfile] = useState<any>(null);
   const [isLoading, setIsLoading] = useState(true);
+  const [jumpingAvatar, setJumpingAvatar] = useState<{ from: number; to: number } | null>(null);
 
-  const levels = Array.from({ length: 10 }, (_, i) => i + 1);
+  const levels = Array.from({ length: 15 }, (_, i) => i + 1);
 
   useEffect(() => {
     fetchProgress();
+    
+    // Check if we just completed a level
+    const justCompleted = sessionStorage.getItem('justCompletedLevel');
+    if (justCompleted) {
+      const levelNum = parseInt(justCompleted);
+      setJumpingAvatar({ from: levelNum, to: levelNum + 1 });
+      sessionStorage.removeItem('justCompletedLevel');
+      
+      // Clear animation after 2 seconds
+      setTimeout(() => {
+        setJumpingAvatar(null);
+      }, 2000);
+    }
   }, [language]);
 
   const fetchProgress = async () => {
@@ -132,7 +146,7 @@ const LevelMap = () => {
         </div>
 
         <div className="relative">
-          <svg className="absolute inset-0 w-full h-full" style={{ height: '800px', zIndex: 0 }}>
+          <svg className="absolute inset-0 w-full h-full" style={{ height: '1200px', zIndex: 0 }}>
             <defs>
               <linearGradient id="pathGradient" x1="0%" y1="0%" x2="100%" y2="100%">
                 <stop offset="0%" stopColor="hsl(var(--primary))" stopOpacity="0.5" />
@@ -158,13 +172,14 @@ const LevelMap = () => {
             />
           </svg>
 
-          <div className="grid grid-cols-5 gap-8 py-12">
+          <div className="grid grid-cols-5 gap-6 py-12 relative">
             {levels.map((level, index) => (
               <div
                 key={level}
+                id={`level-${level}`}
                 className="flex justify-center"
                 style={{
-                  marginTop: index % 2 === 0 ? '0' : '80px',
+                  marginTop: index % 2 === 0 ? '0' : '60px',
                 }}
               >
                 <LevelNode
@@ -176,11 +191,151 @@ const LevelMap = () => {
                 />
               </div>
             ))}
+            
+            {/* Jumping Avatar */}
+            {jumpingAvatar && (
+              <JumpingAvatar
+                fromLevel={jumpingAvatar.from}
+                toLevel={jumpingAvatar.to}
+              />
+            )}
           </div>
         </div>
       </div>
     </div>
     </>
+  );
+};
+
+// Jumping Avatar Component
+const JumpingAvatar = ({ fromLevel, toLevel }: { fromLevel: number; toLevel: number }) => {
+  const [position, setPosition] = useState({ x: 0, y: 0 });
+  
+  useEffect(() => {
+    const fromElement = document.getElementById(`level-${fromLevel}`);
+    const toElement = document.getElementById(`level-${toLevel}`);
+    
+    if (fromElement && toElement) {
+      const fromRect = fromElement.getBoundingClientRect();
+      const toRect = toElement.getBoundingClientRect();
+      
+      // Start at from position
+      setPosition({ x: fromRect.left + fromRect.width / 2, y: fromRect.top + fromRect.height / 2 });
+      
+      // Animate to destination
+      setTimeout(() => {
+        setPosition({ x: toRect.left + toRect.width / 2, y: toRect.top + toRect.height / 2 });
+      }, 100);
+    }
+  }, [fromLevel, toLevel]);
+  
+  return (
+    <div
+      className="fixed pointer-events-none z-50 transition-all duration-1000 ease-in-out"
+      style={{
+        left: position.x,
+        top: position.y,
+        transform: 'translate(-50%, -50%)',
+      }}
+    >
+      <div className="relative animate-bounce">
+        {/* Animated Red Space Bug */}
+        <svg width="64" height="64" viewBox="0 0 64 64" className="drop-shadow-2xl">
+          {/* Bug glow */}
+          <circle cx="32" cy="32" r="28" fill="rgba(239, 68, 68, 0.3)" className="animate-pulse" />
+          
+          {/* Bug body */}
+          <ellipse
+            cx="32"
+            cy="32"
+            rx="24"
+            ry="18"
+            fill="rgb(239, 68, 68)"
+            className="animate-pulse"
+          />
+          
+          {/* Bug shine */}
+          <ellipse
+            cx="28"
+            cy="28"
+            rx="8"
+            ry="6"
+            fill="rgba(255, 100, 100, 0.6)"
+          />
+          
+          {/* Bug eyes (glowing) */}
+          <circle cx="24" cy="28" r="4" fill="rgba(255, 255, 0, 0.9)">
+            <animate attributeName="opacity" values="1;0.5;1" dur="1s" repeatCount="indefinite" />
+          </circle>
+          <circle cx="40" cy="28" r="4" fill="rgba(255, 255, 0, 0.9)">
+            <animate attributeName="opacity" values="1;0.5;1" dur="1s" repeatCount="indefinite" />
+          </circle>
+          
+          {/* Eye pupils */}
+          <circle cx="24" cy="28" r="2" fill="rgba(0, 0, 0, 0.8)" />
+          <circle cx="40" cy="28" r="2" fill="rgba(0, 0, 0, 0.8)" />
+          
+          {/* Antennae */}
+          <line
+            x1="20"
+            y1="18"
+            x2="14"
+            y2="8"
+            stroke="rgb(239, 68, 68)"
+            strokeWidth="3"
+            strokeLinecap="round"
+          >
+            <animate attributeName="y2" values="8;6;8" dur="0.5s" repeatCount="indefinite" />
+          </line>
+          <line
+            x1="44"
+            y1="18"
+            x2="50"
+            y2="8"
+            stroke="rgb(239, 68, 68)"
+            strokeWidth="3"
+            strokeLinecap="round"
+          >
+            <animate attributeName="y2" values="8;6;8" dur="0.5s" repeatCount="indefinite" />
+          </line>
+          
+          {/* Antenna tips */}
+          <circle cx="14" cy="8" r="3" fill="rgb(239, 68, 68)">
+            <animate attributeName="cy" values="8;6;8" dur="0.5s" repeatCount="indefinite" />
+          </circle>
+          <circle cx="50" cy="8" r="3" fill="rgb(239, 68, 68)">
+            <animate attributeName="cy" values="8;6;8" dur="0.5s" repeatCount="indefinite" />
+          </circle>
+          
+          {/* Legs (6 legs) */}
+          <line x1="14" y1="36" x2="8" y2="44" stroke="rgb(239, 68, 68)" strokeWidth="2.5" strokeLinecap="round">
+            <animate attributeName="y2" values="44;46;44" dur="0.3s" repeatCount="indefinite" />
+          </line>
+          <line x1="22" y1="38" x2="16" y2="48" stroke="rgb(239, 68, 68)" strokeWidth="2.5" strokeLinecap="round">
+            <animate attributeName="y2" values="48;50;48" dur="0.3s" repeatCount="indefinite" begin="0.1s" />
+          </line>
+          <line x1="30" y1="40" x2="26" y2="52" stroke="rgb(239, 68, 68)" strokeWidth="2.5" strokeLinecap="round">
+            <animate attributeName="y2" values="52;54;52" dur="0.3s" repeatCount="indefinite" begin="0.2s" />
+          </line>
+          <line x1="50" y1="36" x2="56" y2="44" stroke="rgb(239, 68, 68)" strokeWidth="2.5" strokeLinecap="round">
+            <animate attributeName="y2" values="44;46;44" dur="0.3s" repeatCount="indefinite" />
+          </line>
+          <line x1="42" y1="38" x2="48" y2="48" stroke="rgb(239, 68, 68)" strokeWidth="2.5" strokeLinecap="round">
+            <animate attributeName="y2" values="48;50;48" dur="0.3s" repeatCount="indefinite" begin="0.1s" />
+          </line>
+          <line x1="34" y1="40" x2="38" y2="52" stroke="rgb(239, 68, 68)" strokeWidth="2.5" strokeLinecap="round">
+            <animate attributeName="y2" values="52;54;52" dur="0.3s" repeatCount="indefinite" begin="0.2s" />
+          </line>
+        </svg>
+        
+        {/* Trail effect */}
+        <div className="absolute inset-0 rounded-full bg-red-500 opacity-30 blur-xl animate-ping" />
+        
+        {/* Sparkles */}
+        <div className="absolute -top-2 -right-2 text-2xl animate-spin">✨</div>
+        <div className="absolute -bottom-2 -left-2 text-2xl animate-spin" style={{ animationDelay: '0.5s' }}>💫</div>
+      </div>
+    </div>
   );
 };
 

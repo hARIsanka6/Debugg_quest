@@ -104,6 +104,9 @@ const LevelPlay = () => {
         description: `You earned ${challenge.xp_reward} XP!`,
       });
 
+      // Store completed level for jumping animation
+      sessionStorage.setItem('justCompletedLevel', level || '1');
+
       setTimeout(() => {
         navigate(`/levels/${language}`);
       }, 2500);
