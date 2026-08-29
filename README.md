@@ -4,18 +4,18 @@
 </br>
    
 ### Language Selection
-<img width="600" height="500" alt="Language Selection" src="https://github.com/user-attachments/assets/2b50cbad-6901-46ed-b151-f492ff23a24f" />
+<img width="600" height="400" alt="Language Selection" src="https://github.com/user-attachments/assets/2b50cbad-6901-46ed-b151-f492ff23a24f" />
 </br>
 
 ### Level Selection
 
-<img width="600" height="500" alt="Screenshot 2025-10-25 164052" src="https://github.com/user-attachments/assets/2f0cccab-b67f-44a7-80da-6bd18c3dc037" />
+<img width="600" height="400" alt="Screenshot 2025-10-25 164052" src="https://github.com/user-attachments/assets/2f0cccab-b67f-44a7-80da-6bd18c3dc037" />
 
 </br>
 
 ### Debugg
 
-<img width="600" height="500" alt="Screenshot 2025-10-25 164113" src="https://github.com/user-attachments/assets/fe39a00f-5a72-4529-a2ac-5336be9ab537" />
+<img width="600" height="400" alt="Screenshot 2025-10-25 164113" src="https://github.com/user-attachments/assets/fe39a00f-5a72-4529-a2ac-5336be9ab537" />
 
 ## 📋 Prerequisites
 
